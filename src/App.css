@@ -4,10 +4,13 @@
 
 .app{
     background-color: #fafafa;
-    height: 100vh;
+    height: 100%;
 }
 
 .app_header{
+    position: sticky;
+    top: 0;
+    z-index: 1;
     display: flex;
     background-color: white;
     padding: 20px;
@@ -27,4 +30,8 @@
 
 .app__loginContainer{
     margin-left: auto;
+}
+
+.app__posts{
+    padding: 20px;
 }

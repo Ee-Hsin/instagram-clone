@@ -73,6 +73,7 @@ function App() {
     .catch((error) => alert(error.message));
 
     setOpenSignIn(false);
+
   }
 
   return (
@@ -104,13 +105,16 @@ function App() {
           )}
           </div>
       </div>
-
-      {posts.map(({id, post}) => (
-        <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
-      ))}
+      <div className="app__posts">
+        {posts.map(({id, post}) => (
+          <Post key={id} postId={id} signedInUser={user} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+        ))}
+      </div>
 
       {user ? (
-        <ImageUpload username={user.displayName}/>
+        <>
+          <ImageUpload user={user}/>
+        </>
       ) : (
         <h3>Login to Upload</h3>
       )}

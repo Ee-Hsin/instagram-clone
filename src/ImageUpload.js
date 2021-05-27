@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import firebase from 'firebase';
 import { storage, db } from './firebase';
 import './ImageUpload.css';
 
-function ImageUpload({username}) {
+function ImageUpload({user}) {
 
     const [progress, setProgress] = useState(0);
     const [caption, setCaption] = useState('');
@@ -52,7 +52,7 @@ function ImageUpload({username}) {
                             caption: caption,
                             //We take the url we got from the uploaded image
                             imageUrl: url,
-                            username: username
+                            username: user.displayName
                         });
 
                         setProgress(0);
