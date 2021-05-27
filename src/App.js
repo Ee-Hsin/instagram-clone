@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Post from './Post';
 import AuthenticationModal from './AuthenticationModal';
+import ImageUpload from './ImageUpload';
 import { db, auth } from './firebase';
 import { Button } from '@material-ui/core';
 
@@ -35,8 +36,9 @@ function App() {
     }
   }, [user, username])
 
+  //TO retrieve the posts and set them with setPosts
   useEffect(() => {
-    db.collection('posts').onSnapshot(snapshot => {
+    db.collection('posts').orderBy('timestamp','desc').onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(doc => (
         {
           id: doc.id,
@@ -75,6 +77,7 @@ function App() {
 
   return (
     <div className="app">
+
       <AuthenticationModal 
         open={open} setOpen={setOpen}
         username={username} setUsername={setUsername} 
@@ -90,19 +93,27 @@ function App() {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png"
           alt=""
         />
+          <div className="app__loginContainer">
+          {user ? (
+            <Button onClick={() => auth.signOut()}>Logout</Button>
+          ) : (
+            <>
+              <Button onClick={() => setOpenSignIn(true)}>Login</Button>
+              <Button onClick={() => setOpen(true)}>Sign Up</Button>
+            </>
+          )}
+          </div>
       </div>
-      {user ? (
-        <Button onClick={() => auth.signOut()}>Logout</Button>
-      ) : (
-        <div className="app__loginContainer">
-          <Button onClick={() => setOpenSignIn(true)}>Login</Button>
-          <Button onClick={() => setOpen(true)}>Sign Up</Button>
-        </div>
-      )}
 
-      {posts.map(({id, post})=> (
+      {posts.map(({id, post}) => (
         <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
       ))}
+
+      {user ? (
+        <ImageUpload username={user.displayName}/>
+      ) : (
+        <h3>Login to Upload</h3>
+      )}
 
     </div>
   );
